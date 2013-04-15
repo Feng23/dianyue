@@ -7,8 +7,7 @@ The LCD display table of digits 0~9.
 We can alse include float numbers and negative numbers by add "-" and "." in
 the  table.
 """
-LCD_DISPLAY_TABLE = [
-
+LCD_DISPLAY_TABLE = (
         "-|| ||-",
         "  |  | ",
         "- |-| -",
@@ -19,20 +18,19 @@ LCD_DISPLAY_TABLE = [
         "- |  | ",
         "-||-||-",
         "-||- |-"
-        ]
+        )
 
 
 def error(exitcode, fmt, *args):
-    print fmt %args
+    print >>sys.stderr, fmt %args
     exit(exitcode)
 
 def read_lines(filename):
-    f = open(filename)
-    for line in f:
-        tmp = line.split()
-        #yield int s, str n
-        yield (int(tmp[0]), tmp[1])
-    f.close()
+    with open(filename) as f:
+        for line in f:
+            tmp = line.split()
+            #yield int s, str n
+            yield (int(tmp[0]), tmp[1])
 
 def print_lcd_digit_line(digit_lcd, s, line):
     """
@@ -60,6 +58,7 @@ def print_lcd(s, n):
         for c in n:
             print_lcd_digit_line(LCD_DISPLAY_TABLE[int(c)], s, line)
         print
+    print
 
 
 if __name__ == '__main__':
