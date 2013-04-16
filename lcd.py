@@ -40,11 +40,11 @@ def print_lcd_digit_line(digit_lcd, s, line):
     """
 
     if line in [0, s+1, 2*s+2]:
-        offset = line/(s+1)*3
-        print (" %s " %(digit_lcd[offset]*s)),
+        offset = int(line/(s+1))*3
+        return " %s " %(digit_lcd[offset]*s)
     else:
-        offset = line/(s+1)*3 + 1
-        print ("%s%s%s" %(digit_lcd[offset], " "*s, digit_lcd[offset + 1])),
+        offset = int(line/(s+1))*3 + 1
+        return "%s%s%s" %(digit_lcd[offset], " "*s, digit_lcd[offset + 1])
 
 def print_lcd(s, n):
     """
@@ -55,15 +55,17 @@ def print_lcd(s, n):
     if s <= 0:
         error(2, "The number of separators must greater than 0")
     for line in range(2*s + 3):
+        line_buffer = []
         for c in n:
-            print_lcd_digit_line(LCD_DISPLAY_TABLE[int(c)], s, line)
-        print
-    print
-
+            line_buffer.append(print_lcd_digit_line(LCD_DISPLAY_TABLE[int(c)], s, line))
+        print("".join(line_buffer))
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
         error(1, "usage: %s inputfile", sys.argv[0])
+    first = True
     for s, n in read_lines(sys.argv[1]):
+        if not first:  print("")
         print_lcd(s, n)
+        first = False
 
