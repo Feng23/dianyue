@@ -32,18 +32,17 @@ def read_lines(filename):
             #yield int s, str n
             yield (int(tmp[0]), tmp[1])
 
-def print_lcd_digit_line(digit_lcd, s, line):
+def lcd_digit_fakeline(digit_lcd, s, fakeline):
     """
     digit_lcd is the lcd display of the digit
     s is the number of separators
-    line is the line we want to print
+    fakeline is the fakeline we want to print, 0~4
     """
-
-    if line in [0, s+1, 2*s+2]:
-        offset = int(line/(s+1))*3
+    if fakeline in [0, 2, 4]:
+        offset = fakeline/2*3;
         return " %s " %(digit_lcd[offset]*s)
     else:
-        offset = int(line/(s+1))*3 + 1
+        offset = int(fakeline/2)*3 + 1
         return "%s%s%s" %(digit_lcd[offset], " "*s, digit_lcd[offset + 1])
 
 def print_lcd(s, n):
@@ -54,11 +53,15 @@ def print_lcd(s, n):
 
     if s <= 0:
         error(2, "The number of separators must greater than 0")
-    for line in range(2*s + 3):
+    for line in range(5):
         line_buffer = []
         for c in n:
-            line_buffer.append(print_lcd_digit_line(LCD_DISPLAY_TABLE[int(c)], s, line))
-        print("".join(line_buffer))
+            intc = int(c)
+            line_buffer.append(lcd_digit_fakeline(LCD_DISPLAY_TABLE[intc], s, line))
+        if line%2:
+            print("\n".join([" ".join(line_buffer)]*s))
+        else:
+            print(" ".join(line_buffer))
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
