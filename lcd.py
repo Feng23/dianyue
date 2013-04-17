@@ -59,7 +59,7 @@ def print_lcd(s, n):
             intc = int(c)
             line_buffer.append(lcd_digit_fakeline(LCD_DISPLAY_TABLE[intc], s, line))
         if line%2:
-            print("\n".join([" ".join(line_buffer)]*s))
+            print("\n".join((" ".join(line_buffer),)*s))
         else:
             print(" ".join(line_buffer))
 
